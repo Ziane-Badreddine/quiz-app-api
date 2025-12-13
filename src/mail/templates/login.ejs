@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Login Notification</title>
+    <style>
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #f9f9f9;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+
+        .message {
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .otp-box {
+            margin: 20px auto;
+            padding: 15px;
+            background: #ffffff;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: 4px;
+            border: 1px solid #ccc;
+        }
+
+        .footer {
+            margin-top: 25px;
+            font-size: 13px;
+            color: #777;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="title">Login Verification</div>
+
+        <p class="message">
+            Hello <%= name %>,
+                <br /><br />
+                We received a request to log in to your account. Please use the verification code below:
+        </p>
+
+        <div class="otp-box">
+            <%= code %>
+        </div>
+
+        <p class="message">
+            This code will expire in <strong>10 minutes</strong>.
+            If you did not request this login, please ignore this email.
+        </p>
+
+        <div class="footer">
+            © <%= year %> Quiz App. All rights reserved.
+        </div>
+    </div>
+</body>
+
+</html>

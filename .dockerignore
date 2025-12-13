@@ -1,0 +1,12 @@
+node_modules
+dist
+.env
+.env.local
+.env.dev
+npm-debug.log
+.git
+Dockerfile
+docker-compose.yml
+uploads
+.vscode
+generated
