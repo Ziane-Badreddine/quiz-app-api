@@ -18,6 +18,8 @@ import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { CloudinaryService } from './cloudinary.service';
 import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
 import { CurrentUserType } from 'src/types/user';
+import { ApiBody, ApiConsumes, ApiCookieAuth } from '@nestjs/swagger';
+import { UploadsDto } from './dto/uploads.dto';
 
 @Controller('uploads')
 export class UploadsController {
@@ -25,6 +27,9 @@ export class UploadsController {
 
   @Post('*path')
   @UseGuards(AuthGuard)
+  @ApiCookieAuth()
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({ type: UploadsDto })
   @UseInterceptors(
     FileInterceptor('file', {
       limits: {
@@ -102,6 +107,7 @@ export class UploadsController {
 
   @Delete()
   @UseGuards(AuthGuard)
+  @ApiCookieAuth()
   async deleteFile(
     @Body('publicId') publicId: string,
     @CurrentUser() currentUser: CurrentUserType,

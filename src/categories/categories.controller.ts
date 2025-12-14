@@ -19,8 +19,9 @@ import { GetCategoriesDto } from './dto/get-categories.dto';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { UserRole } from 'generated/prisma/enums';
-import { Roles } from 'src/auth/decorators/roles.dto';
+import { Roles } from 'src/auth/decorators/roles.decorator';
 import { SkipThrottle } from '@nestjs/throttler';
+import { ApiCookieAuth } from '@nestjs/swagger';
 
 @Controller('categories')
 export class CategoriesController {
@@ -42,6 +43,7 @@ export class CategoriesController {
   @Post()
   @Roles(UserRole.ADMIN)
   @UseGuards(AuthGuard, RolesGuard)
+  @ApiCookieAuth()
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() dto: CreateCategoryDto) {
     const newCategory = await this.categoriesService.create(dto);
@@ -54,6 +56,7 @@ export class CategoriesController {
   @Patch(':categoryId')
   @Roles(UserRole.ADMIN)
   @UseGuards(AuthGuard, RolesGuard)
+  @ApiCookieAuth()
   @HttpCode(HttpStatus.OK)
   async update(
     @Param('categoryId', ParseUUIDPipe) categoryId: string,
@@ -72,6 +75,7 @@ export class CategoriesController {
   @Delete(':categoryId')
   @Roles(UserRole.ADMIN)
   @UseGuards(AuthGuard, RolesGuard)
+  @ApiCookieAuth()
   @HttpCode(HttpStatus.OK)
   async delete(@Param('categoryId', ParseUUIDPipe) categoryId: string) {
     await this.categoriesService.delete(categoryId);

@@ -11,13 +11,14 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { QuestionsService } from './questions.service';
-import { Roles } from 'src/auth/decorators/roles.dto';
+import { Roles } from 'src/auth/decorators/roles.decorator';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { UserRole } from 'generated/prisma/enums';
 import { UpdateQuestionDto } from './dto/update-question.dto';
 import { AnswersService } from '../answers/answers.service';
 import { CreateAnswerDto } from '../answers/dto/create-answer.dto';
+import { ApiCookieAuth } from '@nestjs/swagger';
 
 @Controller('questions')
 export class QuestionController {
@@ -28,6 +29,7 @@ export class QuestionController {
   @Patch(':questionId')
   @Roles(UserRole.ADMIN)
   @UseGuards(AuthGuard, RolesGuard)
+  @ApiCookieAuth()
   @HttpCode(HttpStatus.OK)
   public async updateQuestion(
     @Param('questionId', ParseUUIDPipe) questionId: string,
@@ -43,6 +45,7 @@ export class QuestionController {
   @Delete(':questionId')
   @Roles(UserRole.ADMIN)
   @UseGuards(AuthGuard, RolesGuard)
+  @ApiCookieAuth()
   @HttpCode(HttpStatus.OK)
   public async deleteQuestion(
     @Param('questionId', ParseUUIDPipe) questionId: string,
@@ -56,6 +59,7 @@ export class QuestionController {
   @Post(':questionId/answers')
   @Roles(UserRole.ADMIN)
   @UseGuards(AuthGuard, RolesGuard)
+  @ApiCookieAuth()
   @HttpCode(HttpStatus.CREATED)
   public async createMany(
     @Param('questionId', ParseUUIDPipe) questionId: string,
@@ -72,6 +76,7 @@ export class QuestionController {
   @Post(':questionId/answer')
   @Roles(UserRole.ADMIN)
   @UseGuards(AuthGuard, RolesGuard)
+  @ApiCookieAuth()
   @HttpCode(HttpStatus.CREATED)
   public async createQuestion(
     @Param('questionId', ParseUUIDPipe) questionId: string,

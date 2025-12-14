@@ -23,8 +23,7 @@ import { QuizResultModule } from './quiz-result/quiz-result.module';
     QuizResultModule,
     AuthModule,
     ConfigModule.forRoot({
-      envFilePath:
-        process.env.NODE_ENV === 'production' ? '.env.prod' : '.env.dev',
+      envFilePath: '.env',
       isGlobal: true,
     }),
     CacheModule.register({

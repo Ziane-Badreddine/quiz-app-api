@@ -15,7 +15,7 @@ import {
 import { QuizzesService } from './quizzes.service';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
-import { Roles } from 'src/auth/decorators/roles.dto';
+import { Roles } from 'src/auth/decorators/roles.decorator';
 import { UserRole } from 'generated/prisma/enums';
 import { CreateQuizDto } from './dto/create-quiz.dto';
 import { UpdateQuizDto } from './dto/update-quiz.dto';
@@ -24,6 +24,7 @@ import { QuestionsService } from './questions/questions.service';
 import { CreateQuestionDto } from './questions/dto/create-question.dto';
 import { AnswersService } from './answers/answers.service';
 import { SkipThrottle } from '@nestjs/throttler';
+import { ApiCookieAuth } from '@nestjs/swagger';
 
 @Controller('quizzes')
 export class QuizzesController {
@@ -36,6 +37,7 @@ export class QuizzesController {
   @Post()
   @Roles(UserRole.ADMIN)
   @UseGuards(AuthGuard, RolesGuard)
+  @ApiCookieAuth()
   @HttpCode(HttpStatus.CREATED)
   public async createQuiz(@Body() dto: CreateQuizDto) {
     const newQuiz = await this.quizzesService.create(dto);
@@ -48,6 +50,7 @@ export class QuizzesController {
   @Patch(':quizId')
   @Roles(UserRole.ADMIN)
   @UseGuards(AuthGuard, RolesGuard)
+  @ApiCookieAuth()
   @HttpCode(HttpStatus.OK)
   public async updateQuiz(
     @Param('quizId', ParseUUIDPipe) quizId: string,
@@ -63,6 +66,7 @@ export class QuizzesController {
   @Delete(':quizId')
   @Roles(UserRole.ADMIN)
   @UseGuards(AuthGuard, RolesGuard)
+  @ApiCookieAuth()
   @HttpCode(HttpStatus.OK)
   public async deleteQuiz(@Param('quizId', ParseUUIDPipe) quizId: string) {
     const deletedQuestion = await this.quizzesService.delete(quizId);
@@ -88,6 +92,7 @@ export class QuizzesController {
   @Post(':quizId/questions')
   @Roles(UserRole.ADMIN)
   @UseGuards(AuthGuard, RolesGuard)
+  @ApiCookieAuth()
   @HttpCode(HttpStatus.CREATED)
   public async createMany(
     @Param('quizId', ParseUUIDPipe) quizId: string,
@@ -104,6 +109,7 @@ export class QuizzesController {
   @Post(':quizId/question')
   @Roles(UserRole.ADMIN)
   @UseGuards(AuthGuard, RolesGuard)
+  @ApiCookieAuth()
   @HttpCode(HttpStatus.CREATED)
   public async createQuestion(
     @Param('quizId', ParseUUIDPipe) quizId: string,

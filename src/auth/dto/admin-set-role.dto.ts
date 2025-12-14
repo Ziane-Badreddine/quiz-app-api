@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
 import { UserRole } from 'generated/prisma/enums';
 
@@ -6,6 +7,7 @@ export class AdminSetRoleDto {
   @IsNotEmpty()
   userId: string;
 
+  @ApiProperty({ enum: UserRole })
   @IsNotEmpty()
   @IsEnum(UserRole, {
     message: `role must be one of: ${Object.values(UserRole).join(', ')}`,

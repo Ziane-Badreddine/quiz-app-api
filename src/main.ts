@@ -49,13 +49,21 @@ async function bootstrap() {
   );
 
   const config = new DocumentBuilder()
-    .setTitle('Quiz app')
-    .setDescription('Quiz app')
-    .setVersion('1.0')
-    .addTag('quiz')
+    .setTitle('Quiz App API')
+    .setDescription(
+      'A secure and feature-rich API for managing quiz categories, questions, user scores, leaderboards, and achievements.',
+    )
+    .setVersion('1.0.0')
+    .setTermsOfService(`${process.env.BASE_URL}/api/terms-of-service`)
+    .setLicense('MIT License', `${process.env.BASE_URL}/api/license`)
+    .addServer(`${process.env.BASE_URL}`)
+    .addTag('quiz', 'Quiz management and operations')
+    .addCookieAuth('session-id')
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, documentFactory);
+  SwaggerModule.setup('api', app, documentFactory, {
+    jsonDocumentUrl: 'swagger/json',
+  });
 
   await app.listen(process.env.PORT ?? 8080);
 }

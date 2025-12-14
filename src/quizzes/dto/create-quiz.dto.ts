@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   IsEnum,
   IsNotEmpty,
@@ -18,6 +19,7 @@ export class CreateQuizDto {
   @IsString()
   image?: string;
 
+  @ApiProperty({ enum: QuizLevel, default: QuizLevel.EASY })
   @IsOptional()
   @IsEnum(QuizLevel, {
     message: `quiz level must be one of: ${Object.values(QuizLevel).join(', ')}`,

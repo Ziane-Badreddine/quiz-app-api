@@ -21,7 +21,7 @@ import { Session } from './decorators/session.decorator';
 import { AuthGuard } from './guards/auth.guard';
 import { RolesGuard } from './guards/roles.guard';
 import { AdminListUsersDto } from './dto/admin-list-users.dto';
-import { Roles } from './decorators/roles.dto';
+import { Roles } from './decorators/roles.decorator';
 import { UserRole } from 'generated/prisma/enums';
 import { AdminSetRoleDto } from './dto/admin-set-role.dto';
 import { CacheTTL } from '@nestjs/cache-manager';
@@ -33,6 +33,7 @@ import { SkipThrottle } from '@nestjs/throttler';
 import { Request } from 'express';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { VerifyOtpDto } from './dto/verify-otp.dto';
+import { ApiCookieAuth } from '@nestjs/swagger';
 
 @Controller('auth')
 export class AuthController {
@@ -92,6 +93,7 @@ export class AuthController {
   @Get('admin/list-users')
   @Roles(UserRole.ADMIN)
   @UseGuards(AuthGuard, RolesGuard)
+  @ApiCookieAuth()
   @CacheTTL(70000)
   @HttpCode(HttpStatus.OK)
   async listUsers(@Query() dto: AdminListUsersDto) {
@@ -101,6 +103,7 @@ export class AuthController {
   @Post('admin/set-role')
   @Roles(UserRole.ADMIN)
   @UseGuards(AuthGuard, RolesGuard)
+  @ApiCookieAuth()
   @HttpCode(HttpStatus.OK)
   async setRole(@Body() dto: AdminSetRoleDto) {
     const user = await this.authService.setRole(dto.userId, dto.role);
@@ -158,6 +161,7 @@ export class AuthController {
   @Patch('update-user')
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard)
+  @ApiCookieAuth()
   async updateUser(
     @Body() dto: UpdateUserDto,
     @CurrentUser() user: CurrentUserType,
@@ -174,6 +178,7 @@ export class AuthController {
   @Patch('change-password')
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard)
+  @ApiCookieAuth()
   async changePassword(
     @Body() dto: ChangePasswordDto,
     @CurrentUser() user: CurrentUserType,

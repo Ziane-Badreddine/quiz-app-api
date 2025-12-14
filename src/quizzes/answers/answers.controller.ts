@@ -9,12 +9,13 @@ import {
   Patch,
   UseGuards,
 } from '@nestjs/common';
-import { Roles } from 'src/auth/decorators/roles.dto';
+import { Roles } from 'src/auth/decorators/roles.decorator';
 import { AuthGuard } from 'src/auth/guards/auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { UserRole } from 'generated/prisma/enums';
 import { AnswersService } from './answers.service';
 import { UpdateAnswerDto } from './dto/update-answer.dto';
+import { ApiCookieAuth } from '@nestjs/swagger';
 
 @Controller('answers')
 export class AnswersController {
@@ -22,6 +23,7 @@ export class AnswersController {
   @Patch(':answerId')
   @Roles(UserRole.ADMIN)
   @UseGuards(AuthGuard, RolesGuard)
+  @ApiCookieAuth()
   @HttpCode(HttpStatus.OK)
   public async updateAnswer(
     @Param('answerId', ParseUUIDPipe) answerId: string,
@@ -37,6 +39,7 @@ export class AnswersController {
   @Delete(':answerId')
   @Roles(UserRole.ADMIN)
   @UseGuards(AuthGuard, RolesGuard)
+  @ApiCookieAuth()
   @HttpCode(HttpStatus.OK)
   public async deleteAnswer(
     @Param('answerId', ParseUUIDPipe) answerId: string,

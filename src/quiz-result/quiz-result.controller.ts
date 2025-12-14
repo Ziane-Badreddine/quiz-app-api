@@ -17,6 +17,7 @@ import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
 import { CurrentUserType } from 'src/types/user';
 import { CreateQuizResultDto } from './dto/create-quiz-result.dto';
 import { AddAnswerDto } from './dto/add-answer.dto';
+import { ApiCookieAuth } from '@nestjs/swagger';
 
 @Controller('quiz-result')
 export class QuizResultController {
@@ -24,6 +25,7 @@ export class QuizResultController {
 
   @Post()
   @UseGuards(AuthGuard)
+  @ApiCookieAuth()
   @HttpCode(HttpStatus.CREATED)
   public async create(
     @CurrentUser() currentUser: CurrentUserType,
@@ -42,6 +44,7 @@ export class QuizResultController {
 
   @Get()
   @UseGuards(AuthGuard)
+  @ApiCookieAuth()
   @HttpCode(HttpStatus.OK)
   public async findOne(
     @CurrentUser() currentUser: CurrentUserType,
@@ -57,6 +60,7 @@ export class QuizResultController {
 
   @Patch(':quizResultId/answer')
   @UseGuards(AuthGuard)
+  @ApiCookieAuth()
   @HttpCode(HttpStatus.OK)
   public async addAnswer(
     @Param('quizResultId', ParseUUIDPipe) quizResultId: string,
@@ -72,6 +76,7 @@ export class QuizResultController {
 
   @Patch(':quizResultId/restart')
   @UseGuards(AuthGuard)
+  @ApiCookieAuth()
   @HttpCode(HttpStatus.OK)
   restartQuiz(@Param('quizResultId') quizResultId: string) {
     return this.quizResultService.restartQuiz(quizResultId);
